@@ -1,1 +1,1 @@
-Pascal triangle
+Pascal triangle project

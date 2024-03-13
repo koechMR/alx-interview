@@ -1,57 +1,51 @@
 #!/usr/bin/python3
-"""defining isWinner"""
+""" Prime Game"""
 
 
-def isWinner(x, nums):
-    """Function to get who has won"""
-    mariaWinsCount = 0
-    benWinsCount = 0
-
-    for num in nums:
-        roundsSet = list(range(1, num + 1))
-        primesSet = primes_in_range(1, num)
-
-        if not primesSet:
-            benWinsCount += 1
-            continue
-
-        isMariaTurns = True
-
-        while(True):
-            if not primesSet:
-                if isMariaTurns:
-                    benWinsCount += 1
-                else:
-                    mariaWinsCount += 1
-                break
-
-            smallestPrime = primesSet.pop(0)
-            roundsSet.remove(smallestPrime)
-
-            roundsSet = [x for x in roundsSet if x % smallestPrime != 0]
-
-            isMariaTurns = not isMariaTurns
-
-    if mariaWinsCount > benWinsCount:
-        return "Maria"
-
-    if mariaWinsCount < benWinsCount:
-        return "Ben"
-
-    return None
-
-
-def is_prime(n):
-    """Returns True"""
-    if n < 2:
-        return False
-    for a in range(2, int(n ** 0.5) + 1):
-        if n % a == 0:
+def isprime(n):
+    """prime number """
+    for i in range(2, n):
+        if n % i == 0:
             return False
     return True
 
 
-def primes_in_range(start, end):
-    """Returns a list of prime numbers"""
-    primes = [n for n in range(start, end+1) if is_prime(n)]
-    return primes
+def delete_numbers(n, nums):
+    """return zero """
+    for i in range(len(nums)):
+        if nums[i] % n == 0:
+            nums[i] = 0
+
+
+def isWinner(x, nums):
+    """ Return name of player
+    """
+    nums.sort()
+    winner = False
+    Maria = 0
+    Ben = 0
+    for game in range(x):
+        nums2 = list(range(1, nums[game] + 1))
+        turn = 0
+        while True:
+            """
+            monitor turns, uncomment to watch
+            """
+            change = False
+            for i, n in enumerate(nums2):
+                if n > 1 and isprime(n):
+                    delete_numbers(n, nums2)
+                    change = True
+                    turn += 1
+                    break
+            if change is False:
+                break
+        if turn % 2 != 0:
+            Maria += 1
+        else:
+            Ben += 1
+    if Maria == Ben:
+        return None
+    if Maria > Ben:
+        return "Maria"
+    return "Ben"
